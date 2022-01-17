@@ -1,0 +1,407 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D7FAC7F2-15D9-46AC-A6AF-9F672B49BB9E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IKCUA</RootNamespace>
+    <AssemblyName>IKCUA</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.BaselibModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.BaselibModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CloudWebServicesModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.CloudWebServicesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.FacebookModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.FacebookModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticlesLegacyModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ParticlesLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTrackingModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.SpatialTrackingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StyleSheetsModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.StyleSheetsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TimelineModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.TimelineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WebModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.WebModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Valve.Newtonsoft.Json">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\Valve.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ZFBrowser">
+      <HintPath>D:\SteamLibrary\VaM_Release1.13.0.1\VaM_Data\Managed\ZFBrowser.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Atomizer.cs" />
+    <Compile Include="BVH\BVHAnimationLoader.cs" />
+    <Compile Include="BVH\BVHParser.cs" />
+    <Compile Include="BVH\BVHRecorder.cs" />
+    <Compile Include="FinalIK\BipedIK\BipedIK.cs" />
+    <Compile Include="FinalIK\BipedIK\BipedIKSolvers.cs" />
+    <Compile Include="FinalIK\Constraints\Constraint.cs" />
+    <Compile Include="FinalIK\Constraints\ConstraintPosition.cs" />
+    <Compile Include="FinalIK\Constraints\ConstraintPositionOffset.cs" />
+    <Compile Include="FinalIK\Constraints\ConstraintRotation.cs" />
+    <Compile Include="FinalIK\Constraints\ConstraintRotationOffset.cs" />
+    <Compile Include="FinalIK\Constraints\Constraints.cs" />
+    <Compile Include="FinalIK\Finger Rig\FingerRig.cs" />
+    <Compile Include="FinalIK\Grounder\Grounder.cs" />
+    <Compile Include="FinalIK\Grounder\GrounderBipedIK.cs" />
+    <Compile Include="FinalIK\Grounder\GrounderFBBIK.cs" />
+    <Compile Include="FinalIK\Grounder\GrounderIK.cs" />
+    <Compile Include="FinalIK\Grounder\GrounderQuadruped.cs" />
+    <Compile Include="FinalIK\Grounder\Grounding.cs" />
+    <Compile Include="FinalIK\Grounder\GroundingLeg.cs" />
+    <Compile Include="FinalIK\Grounder\GroundingPelvis.cs" />
+    <Compile Include="FinalIK\IK Components\AimIK.cs" />
+    <Compile Include="FinalIK\IK Components\ArmIK.cs" />
+    <Compile Include="FinalIK\IK Components\CCDIK.cs" />
+    <Compile Include="FinalIK\IK Components\FABRIK.cs" />
+    <Compile Include="FinalIK\IK Components\FABRIKRoot.cs" />
+    <Compile Include="FinalIK\IK Components\FullBodyBipedIK.cs" />
+    <Compile Include="FinalIK\IK Components\IK.cs" />
+    <Compile Include="FinalIK\IK Components\IKExecutionOrder.cs" />
+    <Compile Include="FinalIK\IK Components\LegIK.cs" />
+    <Compile Include="FinalIK\IK Components\LimbIK.cs" />
+    <Compile Include="FinalIK\IK Components\LookAtIK.cs" />
+    <Compile Include="FinalIK\IK Components\TrigonometricIK.cs" />
+    <Compile Include="FinalIK\IK Components\VRIK.cs" />
+    <Compile Include="FinalIK\IK Solvers\FABRIKChain.cs" />
+    <Compile Include="FinalIK\IK Solvers\FBBIKArmBending.cs" />
+    <Compile Include="FinalIK\IK Solvers\FBBIKHeadEffector.cs" />
+    <Compile Include="FinalIK\IK Solvers\FBIKChain.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKConstraintBend.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKEffector.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKMapping.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKMappingBone.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKMappingLimb.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKMappingSpine.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolver.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverAim.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverArm.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverCCD.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverFABRIK.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverFABRIKRoot.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverFullBody.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverFullBodyBiped.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverHeuristic.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverLeg.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverLimb.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverLookAt.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverTrigonometric.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVR.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRArm.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRBodyPart.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRFootstep.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRLeg.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRLocomotion.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRLocomotion_Animated.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRLocomotion_Procedural.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRSpine.cs" />
+    <Compile Include="FinalIK\IK Solvers\IKSolverVRUtilities.cs" />
+    <Compile Include="FinalIK\IK Solvers\TwistRelaxer.cs" />
+    <Compile Include="FinalIK\IK Solvers\TwistSolver.cs" />
+    <Compile Include="FinalIK\InteractionSystem\InteractionEffector.cs" />
+    <Compile Include="FinalIK\InteractionSystem\InteractionLookAt.cs" />
+    <Compile Include="FinalIK\InteractionSystem\InteractionObject.cs" />
+    <Compile Include="FinalIK\InteractionSystem\InteractionSystem.cs" />
+    <Compile Include="FinalIK\InteractionSystem\InteractionTarget.cs" />
+    <Compile Include="FinalIK\InteractionSystem\InteractionTrigger.cs" />
+    <Compile Include="FinalIK\Posers\GenericPoser.cs" />
+    <Compile Include="FinalIK\Posers\HandPoser.cs" />
+    <Compile Include="FinalIK\Posers\Poser.cs" />
+    <Compile Include="FinalIK\Ragdoll Utility\RagdollUtility.cs" />
+    <Compile Include="FinalIK\Rotation Limits\RotationLimit.cs" />
+    <Compile Include="FinalIK\Rotation Limits\RotationLimitAngle.cs" />
+    <Compile Include="FinalIK\Rotation Limits\RotationLimitHinge.cs" />
+    <Compile Include="FinalIK\Rotation Limits\RotationLimitPolygonal.cs" />
+    <Compile Include="FinalIK\Rotation Limits\RotationLimitSpline.cs" />
+    <Compile Include="FinalIK\Tools\AimController.cs" />
+    <Compile Include="FinalIK\Tools\AimPoser.cs" />
+    <Compile Include="FinalIK\Tools\Amplifier.cs" />
+    <Compile Include="FinalIK\Tools\BodyTilt.cs" />
+    <Compile Include="FinalIK\Tools\CCDBendGoal.cs" />
+    <Compile Include="FinalIK\Tools\HitReaction.cs" />
+    <Compile Include="FinalIK\Tools\HitReactionVRIK.cs" />
+    <Compile Include="FinalIK\Tools\Inertia.cs" />
+    <Compile Include="FinalIK\Tools\LookAtController.cs" />
+    <Compile Include="FinalIK\Tools\OffsetModifier.cs" />
+    <Compile Include="FinalIK\Tools\OffsetModifierVRIK.cs" />
+    <Compile Include="FinalIK\Tools\OffsetPose.cs" />
+    <Compile Include="FinalIK\Tools\PenetrationAvoidance.cs" />
+    <Compile Include="FinalIK\Tools\Recoil.cs" />
+    <Compile Include="FinalIK\Tools\ShoulderRotator.cs" />
+    <Compile Include="FinalIK\Tools\VRIKCalibrator.cs" />
+    <Compile Include="FinalIK\Tools\VRIKLODController.cs" />
+    <Compile Include="FinalIK\Tools\VRIKRootController.cs" />
+    <Compile Include="RealisticEyeMovements\ControlData.cs" />
+    <Compile Include="RealisticEyeMovements\CritDampTweenQuaternion.cs" />
+    <Compile Include="RealisticEyeMovements\DestroyNotifier.cs" />
+    <Compile Include="RealisticEyeMovements\EyeAndHeadAnimator.cs" />
+    <Compile Include="RealisticEyeMovements\LookTargetController.cs" />
+    <Compile Include="RealisticEyeMovements\SerializableQuaternion.cs" />
+    <Compile Include="RealisticEyeMovements\SerializableVector3.cs" />
+    <Compile Include="RealisticEyeMovements\Utils.cs" />
+    <Compile Include="Shared Scripts\AxisTools.cs" />
+    <Compile Include="Shared Scripts\BipedLimbOrientations.cs" />
+    <Compile Include="Shared Scripts\BipedNaming.cs" />
+    <Compile Include="Shared Scripts\BipedReferences.cs" />
+    <Compile Include="Shared Scripts\Comments.cs" />
+    <Compile Include="Shared Scripts\DemoGUIMessage.cs" />
+    <Compile Include="Shared Scripts\Hierarchy.cs" />
+    <Compile Include="Shared Scripts\Interp.cs" />
+    <Compile Include="Shared Scripts\LayerMaskExtensions.cs" />
+    <Compile Include="Shared Scripts\LazySingleton.cs" />
+    <Compile Include="Shared Scripts\Navigator.cs" />
+    <Compile Include="Shared Scripts\PropertyAttributes.cs" />
+    <Compile Include="Shared Scripts\QuaTools.cs" />
+    <Compile Include="Shared Scripts\Singleton.cs" />
+    <Compile Include="Shared Scripts\SolverManager.cs" />
+    <Compile Include="Shared Scripts\TriggerEventBroadcaster.cs" />
+    <Compile Include="Shared Scripts\V3Tools.cs" />
+    <Compile Include="Shared Scripts\Warning.cs" />
+    <Compile Include="VamIK.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FinalIK\Gizmos\AimIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\BipedIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\CCDIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\Chain Icon.png" />
+    <Content Include="FinalIK\Gizmos\EndEffector Icon.png" />
+    <Content Include="FinalIK\Gizmos\FABRIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\FABRIKRoot Icon.png" />
+    <Content Include="FinalIK\Gizmos\FullBodyBipedIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\GrounderBipedIK.png" />
+    <Content Include="FinalIK\Gizmos\GrounderFBBIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\GrounderIK.png" />
+    <Content Include="FinalIK\Gizmos\GrounderQuadruped.png" />
+    <Content Include="FinalIK\Gizmos\InteractionObject Icon.png" />
+    <Content Include="FinalIK\Gizmos\InteractionSystem Icon.png" />
+    <Content Include="FinalIK\Gizmos\InteractionTarget Icon.png" />
+    <Content Include="FinalIK\Gizmos\InteractionTrigger Icon.png" />
+    <Content Include="FinalIK\Gizmos\LimbIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\LookAtIK Icon.png" />
+    <Content Include="FinalIK\Gizmos\Mapping Icon.png" />
+    <Content Include="FinalIK\Gizmos\MidEffector Icon.png" />
+    <Content Include="FinalIK\Gizmos\RotationLimitAngle Icon.png" />
+    <Content Include="FinalIK\Gizmos\RotationLimitHinge Icon.png" />
+    <Content Include="FinalIK\Gizmos\RotationLimitPolygonal Icon.png" />
+    <Content Include="FinalIK\Gizmos\RotationLimitSpline Icon.png" />
+    <Content Include="FinalIK\Gizmos\TrigonometricIK Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FinalIK\_DEMOS\FBBIK\Head Effector.unity" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y /d  $(TargetPath) "D:\SteamLibrary\VaM_Release1.13.0.1\Custom\Scripts\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
