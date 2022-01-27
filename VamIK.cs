@@ -7,6 +7,7 @@ using Blazedust.CUAM;
 using System.Collections;
 using UnityEngine.UI;
 using SimpleJSON;
+using UniHumanoid;
 
 namespace IKCUA
 {
@@ -24,7 +25,9 @@ namespace IKCUA
 		public Dictionary<Transform, Atom> effectors;
 		public Animator animator;
 		public FBBIKHeadEffector headEffector;
+		public LookAtIK lookAtComponent;
 		public Atom headEffectorAtom;
+		public Atom lookAtAtom;
 		public JSONStorableBool forceEnable;
 		public bool newlyAddedSolver = true;
 
@@ -84,6 +87,7 @@ namespace IKCUA
 		JSONClass pluginJson;
 		bool checkSolvers = false;
 		const string XPSLoaderName = "XPSLoader.XPSLoader";
+		const string LOOK_AT_EFFECTOR_NAME = "LOOKAT";
 
 		List<string> solverChoicesFull = new List<String>(new String[] { SolverType.CCD.ToString(), SolverType.FABBRIK.ToString(), SolverType.Limb.ToString(), SolverType.FullBody.ToString() });
 		List<string> solverChoicesMinusFBB = new List<String>(new String[] { SolverType.CCD.ToString(), SolverType.FABBRIK.ToString(), SolverType.Limb.ToString() });
@@ -118,19 +122,20 @@ namespace IKCUA
 			{
 				yield return null;
 			}
-
+			
 			//no XPS loader and we have a custom asset.
 			if (!attachedXPSLoader && dd != null)
 			{
+				
 				string assetUrl = dd.GetUrlParamValue("assetUrl");
-				string assetName = dd.GetStringParamValue("assetName");
+				string assetName = dd.GetStringChooserParamValue("assetName");
 
-				if (assetUrl != null && assetName != null)
+				if (assetUrl != null && assetName !=null && assetUrl.Length > 0 && assetName.Length > 0)
 				{
-					while (!dd.isAssetLoaded)
-					{
-						yield return null;
-					}
+						while (!dd.isAssetLoaded)
+						{
+							yield return null;
+						}					
 				}
 			}
 			else if (attachedXPSLoader)
@@ -153,6 +158,8 @@ namespace IKCUA
 
 			if (subscene)
 				SubSceneRefresh();
+			else
+				refreshTransforms(false);
 
 			recordOriginalTransforms();
 
@@ -668,7 +675,6 @@ namespace IKCUA
 
 			if (markedBones.ContainsKey(uniqueName))
 			{
-
 				List<GameObject> marked = markedBones[uniqueName];
 
 				markedBones.Remove(uniqueName);
@@ -734,6 +740,7 @@ namespace IKCUA
 					needsReset[originalTrans.name].freeControllers[0].transform.rotation = rot;
 				}				
 			}
+
 			if(reenableIK)
 			{ 
 
@@ -761,21 +768,6 @@ namespace IKCUA
 				resetToOriginalTransforms(true);
 		}
 
-	/*	public void getFullBodyIKSettings(List<object> bindings)
-		{
-			foreach(KeyValuePair<int, VAMIKSolver> iks in solverDict)
-			{
-				if(iks.Value.solver.GetType().Equals(typeof(FullBodyBipedIK)))
-				{
-					bindings.Add(iks.Value.animator); //body animator;
-					bindings.Add(iks.Value.effectors); //body animator;
-					bindings.Add(iks.Value.headEffectorAtom); //head effector animator;
-					bindings.Add(originalMeshArmature);
-					break;
-				}
-			}
-		}*/
-
 		public void getOriginalPose(List<object> bindings)
 		{
 			foreach (KeyValuePair<int, VAMIKSolver> iks in solverDict)
@@ -801,6 +793,62 @@ namespace IKCUA
 			}
 		}
 
+		public void disableFullBodyIK(List<object> bindings)
+		{
+			foreach (KeyValuePair<int, VAMIKSolver> solvd in solverDict)
+			{
+				solvd.Value.solver.enabled = false;
+
+				if (solvd.Value.headEffector != null)
+				{
+					solvd.Value.headEffector.enabled = false;					
+					//solvd.Value.solver.GetComponent<LookAtIK>().enabled = false;
+				}
+			}
+		}
+
+		public void enableFullBodyIK(List<object> bindings)
+		{
+			foreach (KeyValuePair<int, VAMIKSolver> solvd in solverDict)
+			{
+				solvd.Value.solver.enabled = true;
+
+				if (solvd.Value.headEffector != null)
+				{
+					solvd.Value.headEffector.enabled = true;
+					//solvd.Value.solver.GetComponent<LookAtIK>().enabled = true;
+				}
+			}
+		}
+
+		public void fullBodyIKState(List<object> bindings)
+		{
+			foreach (KeyValuePair<int, VAMIKSolver> iks in solverDict)
+			{
+				if (iks.Value.solver.GetType().Equals(typeof(FullBodyBipedIK)))
+				{
+					bindings.Add(iks.Value.solver.enabled);
+				}	
+			}
+		}
+
+
+		public void disableLookAt(List<object> bindings)
+		{
+			foreach (KeyValuePair<int, VAMIKSolver> solvd in solverDict)
+			{
+				solvd.Value.solver.GetComponent<LookAtIK>().enabled = false;
+			}
+		}
+
+		public void enableLookAt(List<object> bindings)
+		{
+			foreach (KeyValuePair<int, VAMIKSolver> solvd in solverDict)
+			{
+				solvd.Value.solver.GetComponent<LookAtIK>().enabled = true;
+			}
+		}
+
 		public void getAnimator(List<object> bindings)
 		{
 			foreach (KeyValuePair<int, VAMIKSolver> iks in solverDict)
@@ -811,6 +859,21 @@ namespace IKCUA
 					break;
 				}
 			}
+		}
+
+		public void isFullBodyIKAttached(List<object> bindings)
+		{
+			bool fbbAttached = false;
+			foreach (KeyValuePair<int, VAMIKSolver> iks in solverDict)
+			{
+				if (iks.Value.solver.GetType().Equals(typeof(FullBodyBipedIK)))
+				{
+					fbbAttached = true; //body animator;
+					break;
+				}
+			}
+
+			bindings.Add(fbbAttached); 
 		}
 
 		public override void Init()
@@ -1923,6 +1986,25 @@ namespace IKCUA
 
 			if (checkSolvers)
 				StartCoroutine(enableIKSolvers());
+
+			updateHeadEffector();
+		}
+
+		protected void updateHeadEffector()
+		{
+			foreach (KeyValuePair<int, VAMIKSolver> iks in solverDict)
+			{
+				if (iks.Value.solver.GetType().Equals(typeof(FullBodyBipedIK)))
+				{
+					if(iks.Value.headEffector!=null && iks.Value.headEffectorAtom!=null)
+					{
+						iks.Value.headEffector.transform.position = iks.Value.headEffectorAtom.freeControllers[0].transform.position;
+						iks.Value.headEffector.transform.rotation = iks.Value.headEffectorAtom.freeControllers[0].transform.rotation;
+						break;
+					}
+
+				}
+			}
 		}
 
 		protected void RefreshLineRenderer()
@@ -2333,9 +2415,9 @@ namespace IKCUA
 			headEff.stretchDamper = 1f;
 			headEff.handsPullBody = true;
 			headEff.positionWeight = .8f;
-			headEff.rotationWeight = 0f;
+			headEff.rotationWeight = .8f;
 			headEff.bendWeight = 1f;
-
+			headEff.transform.parent = head_.parent;
 			vamkent.headEffector = headEff;
             #endregion
 
@@ -2413,20 +2495,33 @@ namespace IKCUA
 				limb.weight = 1f;
 			}
 
+
+			LookAtIK look = pelvis_.parent.gameObject.AddComponent<LookAtIK>();
+			look.solver.eyes = new IKSolverLookAt.LookAtBone[0];
+			look.solver.head = new IKSolverLookAt.LookAtBone(head_);
+
+			List<IKSolverLookAt.LookAtBone> spineLook = new List<IKSolverLookAt.LookAtBone>();
+			foreach (Transform spBone in spineCol) spineLook.Add(new IKSolverLookAt.LookAtBone(spBone));
+			look.solver.spine = spineLook.ToArray();
+			vamkent.lookAtComponent = look;
+			//look.solver.target = headEffector.transform;
+
 			if (headEff != null)
 			{
 				if (restore && effectorMapping.ContainsKey(head))
 				{
+					
 					Atom effectorAtom = SuperController.singleton.GetAtomByUid(effectorMapping[head]);
 					if (effectorAtom == null && subscene)
 					{
 						effectorAtom = SuperController.singleton.GetAtomByUid(containingAtom.subScenePath + effectorMapping[head]);
 					}
+					
 
 					headEffector.transform.position = effectorAtom.freeControllers[0].transform.position;
 					headEffector.transform.rotation = effectorAtom.freeControllers[0].transform.rotation;
 
-					headEffector.transform.parent = effectorAtom.freeControllers[0].transform;
+				// effectorAtom.freeControllers[0].transform;
 					effectorAtom.SetParentAtom(getActualContainingAtom(subscene));
 					vamkent.headEffectorAtom = effectorAtom;
 					effectorList = effectorList.Length == 0 ? effectorMapping[head] : effectorList + "," + effectorMapping[head];
@@ -2436,74 +2531,107 @@ namespace IKCUA
 					string effectorName = counted + "&" + head + "&" + uniq + "FBBIK_Effector";
 					atomizer.CreateAtom("Empty", effectorName, "", atomCreatedHeadEffector);
 					effectorList = effectorList.Length == 0 ? effectorName : effectorList + "," + effectorName;
+					//headEffector.transform.parent = head_.parent;
+				}
+				//Look effector
+				if (restore && effectorMapping.ContainsKey(LOOK_AT_EFFECTOR_NAME))
+				{
+					Atom effectorAtom = SuperController.singleton.GetAtomByUid(effectorMapping[LOOK_AT_EFFECTOR_NAME]);
+					if (effectorAtom == null && subscene)
+					{
+						effectorAtom = SuperController.singleton.GetAtomByUid(containingAtom.subScenePath + effectorMapping[LOOK_AT_EFFECTOR_NAME]);
+					}
+
+					look.solver.target = effectorAtom.freeControllers[0].transform;										
+					effectorAtom.SetParentAtom(getActualContainingAtom(subscene));
+					vamkent.lookAtAtom = effectorAtom;
+					effectorList = effectorList.Length == 0 ? effectorMapping[LOOK_AT_EFFECTOR_NAME] : effectorList + "," + effectorMapping[LOOK_AT_EFFECTOR_NAME];
+				}
+				else
+				{
+					string effectorName = counted + "&"+ LOOK_AT_EFFECTOR_NAME +"& " + uniq + "FBBIK_Effector";
+					atomizer.CreateAtom("Empty", effectorName, "", atomCreatedLookAt);
+					effectorList = effectorList.Length == 0 ? effectorName : effectorList + "," + effectorName;
 				}
 			}
-
-			LookAtIK look = pelvis_.parent.gameObject.AddComponent<LookAtIK>();
-			look.solver.eyes = new IKSolverLookAt.LookAtBone[0];
-			look.solver.head = new IKSolverLookAt.LookAtBone(head_);
-
-			List<IKSolverLookAt.LookAtBone> spineLook = new List<IKSolverLookAt.LookAtBone>();
-			foreach(Transform spBone in spineCol) spineLook.Add(new IKSolverLookAt.LookAtBone(spBone));
-			look.solver.spine = spineLook.ToArray();
-			look.solver.target = headEffector.transform;// SuperController.singleton.centerCameraTarget.transform;
-
-			if (leye_!=null && reye_!=null)
+			
+			if (leye_ != null && reye_ != null)
 			{
-				look.solver.eyes = new IKSolverLookAt.LookAtBone[ ] { new IKSolverLookAt.LookAtBone(leye_), new IKSolverLookAt.LookAtBone(reye_) };
+				look.solver.eyes = new IKSolverLookAt.LookAtBone[] { new IKSolverLookAt.LookAtBone(leye_), new IKSolverLookAt.LookAtBone(reye_) };
+			}
 
-                #region animator and lookcontroller.
-                	Dictionary<string, HumanBodyBones> mapping = new Dictionary<string, HumanBodyBones>();
-					List<Transform> bonesInUse = new List<Transform>();
+				#region animator and lookcontroller.
+				Dictionary<HumanBodyBones, Transform> mapping = new Dictionary<HumanBodyBones, Transform>();
+				List<Transform> bonesInUse = new List<Transform>();
 
-					mapping.Add(pelvis_.name, HumanBodyBones.Hips); bonesInUse.Add(pelvis_);
+				mapping.Add(HumanBodyBones.Hips, pelvis_); bonesInUse.Add(pelvis_);
 
-					mapping.Add(lthigh_.name, HumanBodyBones.LeftUpperLeg ); bonesInUse.Add(lthigh_);
-					mapping.Add(lcalf_.name, HumanBodyBones.LeftLowerLeg ); bonesInUse.Add(lcalf_);
-					mapping.Add(lfoot_.name, HumanBodyBones.LeftFoot ); bonesInUse.Add(lfoot_);
+				mapping.Add(HumanBodyBones.LeftUpperLeg, lthigh_); bonesInUse.Add(lthigh_);
+				mapping.Add(HumanBodyBones.LeftLowerLeg, lcalf_); bonesInUse.Add(lcalf_);
+				mapping.Add(HumanBodyBones.LeftFoot, lfoot_); bonesInUse.Add(lfoot_);
+				Transform lToe = getChildBoneWithPartialName(lfoot_, "toe");
+				if (lToe != null)
+					mapping.Add(HumanBodyBones.LeftToes, lToe); bonesInUse.Add(lToe);
 
-					mapping.Add(rthigh_.name, HumanBodyBones.RightUpperLeg ); bonesInUse.Add(rthigh_);
-					mapping.Add(rcalf_.name, HumanBodyBones.RightLowerLeg ); bonesInUse.Add(rcalf_);
-					mapping.Add(rfoot_.name, HumanBodyBones.RightFoot ); bonesInUse.Add(rfoot_);
 
-					mapping.Add(luarm_.parent.name, HumanBodyBones.LeftShoulder); bonesInUse.Add(luarm_.parent);
-					mapping.Add(luarm_.name, HumanBodyBones.LeftUpperArm ); bonesInUse.Add(luarm_);
-					mapping.Add(lfarm_.name, HumanBodyBones.LeftLowerArm ); bonesInUse.Add(lfarm_);
-					mapping.Add(lhand_.name, HumanBodyBones.LeftHand ); bonesInUse.Add(lhand_);
+				mapping.Add(HumanBodyBones.RightUpperLeg, rthigh_); bonesInUse.Add(rthigh_);
+				mapping.Add(HumanBodyBones.RightLowerLeg, rcalf_); bonesInUse.Add(rcalf_);
+				mapping.Add(HumanBodyBones.RightFoot, rfoot_); bonesInUse.Add(rfoot_);
+				Transform rToe = getChildBoneWithPartialName(rfoot_, "toe");
+				if (rToe != null)
+					mapping.Add(HumanBodyBones.RightToes, rToe); bonesInUse.Add(rToe);
 
-					mapping.Add(ruarm_.parent.name, HumanBodyBones.RightShoulder); bonesInUse.Add(ruarm_.parent);
-					mapping.Add(ruarm_.name, HumanBodyBones.RightUpperArm); bonesInUse.Add(ruarm_);
-					mapping.Add(rfarm_.name, HumanBodyBones.RightLowerArm); bonesInUse.Add(rfarm_);
-					mapping.Add(rhand_.name, HumanBodyBones.RightHand); bonesInUse.Add(rhand_);
 
-					mapping.Add(spine1_.name, HumanBodyBones.Spine ); bonesInUse.Add(spine1_);
-					mapping.Add(spine2_.name, HumanBodyBones.Chest ); bonesInUse.Add(spine2_);
+				mapping.Add(HumanBodyBones.LeftShoulder, luarm_.parent); bonesInUse.Add(luarm_.parent);
+				mapping.Add(HumanBodyBones.LeftUpperArm, luarm_); bonesInUse.Add(luarm_);
+				mapping.Add(HumanBodyBones.LeftLowerArm, lfarm_); bonesInUse.Add(lfarm_);
+				mapping.Add(HumanBodyBones.LeftHand, lhand_); bonesInUse.Add(lhand_);
 
-					mapping.Add(neck_.name, HumanBodyBones.Neck); bonesInUse.Add(neck_);
-					mapping.Add(head_.name, HumanBodyBones.Head); bonesInUse.Add(head_);
-					mapping.Add(leye_.name, HumanBodyBones.LeftEye); bonesInUse.Add(leye_);
-					mapping.Add(reye_.name, HumanBodyBones.RightEye); bonesInUse.Add(reye_);
+				mapping.Add(HumanBodyBones.RightShoulder, ruarm_.parent); bonesInUse.Add(ruarm_.parent);
+				mapping.Add(HumanBodyBones.RightUpperArm, ruarm_); bonesInUse.Add(ruarm_);
+				mapping.Add(HumanBodyBones.RightLowerArm, rfarm_); bonesInUse.Add(rfarm_);
+				mapping.Add(HumanBodyBones.RightHand, rhand_); bonesInUse.Add(rhand_);
+
+				mapping.Add(HumanBodyBones.Spine, spineCol[0]); bonesInUse.Add(spineCol[0]);
+				mapping.Add(HumanBodyBones.Chest, spineCol[1]); bonesInUse.Add(spineCol[1]);
+
+				mapping.Add(HumanBodyBones.Neck, neck_); bonesInUse.Add(neck_);
+				mapping.Add(HumanBodyBones.Head, head_); bonesInUse.Add(head_);
+
+
+				if (leye_ != null)
+					mapping.Add(HumanBodyBones.LeftEye, leye_); bonesInUse.Add(leye_);
+
+				if (reye_ != null)
+					mapping.Add(HumanBodyBones.RightEye, reye_); bonesInUse.Add(reye_);
+
+										
+			
+				Transform rootObj = getActualSkinnedMeshRoot(pelvis_, "rescaleObject");
+
+
+			Transform parentHolder = rootObj.parent;
+			
+				rootObj.parent = null;
+				AvatarDescription descr = AvatarDescription.Create(mapping);//, bonesInUse);
+
+				Avatar Avatar = descr.CreateAvatar(rootObj);
 				
-					bonesInUse = getChildTransforms(pelvis_.parent.name);
-					bonesInUse.Add(pelvis_.parent);
-					Transform parentHolder = pelvis_.parent.parent;
+				Avatar.name = "Avatar";
 
-					pelvis_.parent.parent = null;
+				rootObj.parent = parentHolder;
+				Animator animator;
 
-					Animator ar = pelvis_.parent.gameObject.AddComponent<Animator>();
-					ar.enabled = false;
+				if (rootObj.gameObject.GetComponent<Animator>() != null)
+					animator = rootObj.gameObject.GetComponent<Animator>();
+				else
+					animator = rootObj.gameObject.AddComponent<Animator>();				
+				
+				
+				animator.avatar = Avatar;
 
-					Avatar av = createAvatar(mapping, bonesInUse, pelvis_.parent.gameObject);
-					pelvis_.parent.parent = parentHolder;
 
-					ar.avatar = av;
-
-					av.name = pelvis;
-
-					ar.applyRootMotion = true;
-
-					ar.enabled = true;
-					vamkent.animator = ar;
+				vamkent.animator = animator;
 
 			/*		EyeAndHeadAnimator eaha = pelvis_.parent.gameObject.AddComponent<EyeAndHeadAnimator>();
 
@@ -2528,9 +2656,8 @@ namespace IKCUA
 					ltc.Initialize();
 					*/
 				#endregion
-			}
+			
 
-		//	this.containingAtom.gameObject.AddComponent<ElkVR.BVHPlayer>();
 
 
 			if (!restore) {
@@ -2569,6 +2696,35 @@ namespace IKCUA
 
 		}
 
+		protected Transform getActualSkinnedMeshRoot(Transform starter, string rootMatchName)
+		{			
+			Transform finder = starter;
+			while (finder.parent != null)
+			{
+				
+				if (finder.parent.name.ToLower().Equals(rootMatchName.ToLower()))
+					return finder;
+				else
+					finder = finder.parent;
+			}
+
+			return null;
+		}
+
+		protected Transform getChildBoneWithPartialName(Transform parent, string partialBoneName)
+		{
+
+			foreach(Transform child in parent.GetComponentsInChildren<Transform>())
+			{
+				if (child.name.ToLower().Contains(partialBoneName.ToLower()))
+				{
+					return child;
+				}
+			}
+
+			return null;
+		}
+
 		public IEnumerator enableIKSolvers()
 		{
 
@@ -2585,7 +2741,7 @@ namespace IKCUA
 
 							yield return new WaitForSeconds(2);
 
-							if (vamkent.Value.headEffector != null) vamkent.Value.headEffector.enabled = false; //never start with the head effector on
+							if (vamkent.Value.headEffector != null) vamkent.Value.headEffector.enabled = true; //never start with the head effector on
 							vamkent.Value.newlyAddedSolver = false;
 						
 					}
@@ -2624,9 +2780,7 @@ namespace IKCUA
 
 		public void atomCreatedLimb(Atom atcre)
 		{
-			MeshRenderer mResh = atcre.GetComponentInChildren<MeshRenderer>();
-			if (mResh != null)
-				Destroy(mResh);
+			disableSphereRenderer(atcre);
 
 			int countE = int.Parse(atcre.name.Split('_')[0]);
 			LimbIK limbk = ((LimbIK)solverDict[countE].solver);
@@ -2649,9 +2803,7 @@ namespace IKCUA
 
 		public void atomCreatedCCD(Atom atcre)
 		{
-			MeshRenderer mResh = atcre.GetComponentInChildren<MeshRenderer>();
-			if (mResh != null)
-				Destroy(mResh);
+			disableSphereRenderer(atcre);
 
 			int countE = int.Parse(atcre.name.Split('_')[0]);
 			CCDIK ccd = ((CCDIK)solverDict[countE].solver);
@@ -2667,9 +2819,7 @@ namespace IKCUA
 
 		public void atomCreatedFABBRIK(Atom atcre)
 		{
-			MeshRenderer mResh = atcre.GetComponentInChildren<MeshRenderer>();
-			if (mResh != null)
-				Destroy(mResh);
+			disableSphereRenderer(atcre);
 
 			int countE = int.Parse(atcre.name.Split('_')[0]);
 			FABRIK ccd = ((FABRIK)solverDict[countE].solver);
@@ -2690,9 +2840,7 @@ namespace IKCUA
 			int countE = int.Parse(vals[0]);
 			String boneName = vals[1];
 
-			MeshRenderer mResh = atcre.GetComponentInChildren<MeshRenderer>();
-			if (mResh != null)
-				Destroy(mResh);
+			disableSphereRenderer(atcre);
 
 
 			if (atcre.name.Contains("Effector"))
@@ -2740,10 +2888,36 @@ namespace IKCUA
 
 		}
 
+		public void atomCreatedLookAt(Atom atcre)
+		{
+			String[] vals = atcre.name.Split('&');
+			disableSphereRenderer(atcre);
+			int countE = int.Parse(vals[0]);
+			String boneName = vals[1];
+
+			Vector3 position = Vector3.forward + solverDict[countE].headEffector.transform.position;
+						
+			atcre.freeControllers[0].transform.position = position;			
+
+			atcre.parentAtom = getActualContainingAtom();
+
+			solverDict[countE].lookAtComponent.solver.target = atcre.freeControllers[0].transform;
+		}
+
+		protected void disableSphereRenderer(Atom atcre)
+		{
+			Renderer rend = atcre.GetComponentInChildren<Renderer>(true);
+
+			if(rend!=null)
+			{
+				rend.enabled = false;
+			}
+		}
+
 		public void atomCreatedHeadEffector(Atom atcre)
 		{
 			String[] vals = atcre.name.Split('&');
-
+			disableSphereRenderer(atcre);
 			int countE = int.Parse(vals[0]);
 			String boneName = vals[1];
 
@@ -2751,8 +2925,9 @@ namespace IKCUA
 			Quaternion rotatio = transforms[boneName].rotation;
 			atcre.freeControllers[0].transform.position = position;
 			atcre.freeControllers[0].transform.rotation = rotatio;
-			atcre.parentAtom = getActualContainingAtom();
-			solverDict[countE].headEffector.transform.parent = atcre.freeControllers[0].transform;
+			atcre.SetParentAtom(getActualContainingAtom(subscene));
+
+			//solverDict[countE].headEffector.transform.parent = atcre.freeControllers[0].transform;
 		}
 
 		public UIDynamicTextField CreateLabel(string label, bool rhs, int height = 40)
@@ -2777,13 +2952,28 @@ namespace IKCUA
 
 		protected UIDynamicSlider createIKFloatSlider(string name, string displayName, float initialVal, Action<float> settable, bool restore)
 		{
-			JSONStorableFloat settableVal = new JSONStorableFloat(name, initialVal, 0f, 1f);
-			RegisterFloat(settableVal);
-			settableVal.setJSONCallbackFunction += delegate (JSONStorableFloat js) { settable(js.val); };
-			if (restore && pluginJson != null) settableVal.RestoreFromJSON(pluginJson);
-			UIDynamicSlider solverPositionWeightslider = CreateSlider(settableVal, true);
-			solverPositionWeightslider.labelText.text = displayName;
-			return solverPositionWeightslider;
+			JSONStorableFloat settableVal;
+			if (GetFloatJSONParam(name) == null)
+			{
+				 settableVal = new JSONStorableFloat(name, initialVal, 0f, 1f);
+				RegisterFloat(settableVal);
+			}
+			else
+			{
+				settableVal = GetFloatJSONParam(name);
+				//settableVal.val = initialVal;
+			}
+
+			if (restore && pluginJson != null)
+            {
+                settableVal.RestoreFromJSON(pluginJson);
+                if (settableVal != null) { settable(settableVal.val); }          
+            }
+            settableVal.setJSONCallbackFunction += delegate (JSONStorableFloat js) { settable(js.val); };
+
+            UIDynamicSlider solverPositionWeightslider = CreateSlider(settableVal, true);
+            solverPositionWeightslider.labelText.text = displayName;
+            return solverPositionWeightslider;
 		}
 
 		protected UIDynamic createIKToggle(string name, string displayName, bool initialVal, Action<bool> settable, bool restore)
@@ -2872,11 +3062,11 @@ namespace IKCUA
 
 
 						if (lookAtTarget.val.Equals("None"))
-								lok.solver.target = null;
-							else if (lookAtTarget.val.Equals("Target"))
-								lok.solver.target = fbbH.transform;
-							else if (lookAtTarget.val.Equals("Player"))
-								lok.solver.target = SuperController.singleton.centerCameraTarget.transform;
+							lok.solver.target = null;
+						else if (lookAtTarget.val.Equals("Target"))
+							lok.solver.target = solvD.lookAtAtom != null ? solvD.lookAtAtom.freeControllers[0].transform : fbbH.transform;
+						else if (lookAtTarget.val.Equals("Player"))
+							lok.solver.target = SuperController.singleton.centerCameraTarget.transform;
 
 
 					UIDynamicPopup fp = CreateFilterablePopup(lookAtTarget, true);
@@ -2887,13 +3077,13 @@ namespace IKCUA
 						if (val.Equals("None"))
 							lok.solver.target = null;
 						else if (val.Equals("Target"))
-							lok.solver.target = fbbH.transform;
+							lok.solver.target = solvD.lookAtAtom.freeControllers[0].transform;
 						else if (val.Equals("Player"))
 							lok.solver.target = SuperController.singleton.centerCameraTarget.transform;
 					};
 
 					
-						uiDictL.Add(createIKFloatSlider("effectorPositionWeight_Eye_" + solverId, "Eye Weight", lok.solver.eyesWeight, (float val) => { lok.solver.eyesWeight = val; }, restore));
+					uiDictL.Add(createIKFloatSlider("effectorPositionWeight_Eye_" + solverId, "Eye Weight", lok.solver.eyesWeight, (float val) => { lok.solver.eyesWeight = val; }, restore));
 					uiDictL.Add(createIKFloatSlider("effectorClampWeight_Eye_" + solverId, "Eye Clamp Weight", lok.solver.clampWeightEyes, (float val) => { lok.solver.clampWeightEyes = val; }, restore));
 					uiDictL.Add(createIKFloatSlider("effectorLookBodyWeight" + solverId, "Look Body Weight", lok.solver.bodyWeight, (float val) => { lok.solver.bodyWeight = val; }, restore));
 
@@ -2979,7 +3169,7 @@ namespace IKCUA
 		}
 
 		public override void PostRestore()
-		{		
+		{
 			pluginJson = null;
 
 			if (!subscene)
@@ -2994,11 +3184,13 @@ namespace IKCUA
 				string ssPath = null;
 
 				foreach (JSONNode st in subsceneSave.Childs)
-				{
+				{					
 					if (st["id"].ToString().Equals("\"" + this.containingAtom.subScenePath.TrimEnd('/') + "\""))
 					{
+
 						foreach (JSONNode subSt in st["storables"].Childs)
 						{
+
 							if (subSt["id"].ToString().Equals("\"" + this.containingAtom.containingSubScene.storeId + "\""))
 							{
 								pluginJson = subSt.AsObject;
@@ -3010,14 +3202,25 @@ namespace IKCUA
 					}
 				}
 
+				//if ss path!=null and it doesn't contain a / it means its just been made.. have to goto the UI to get where.
+
+				if (ssPath != null && !ssPath.Contains("/"))
+				{
+					SubScene subSceneComp = this.containingAtom.containingSubScene;
+					SubSceneUI subSceneUI = subSceneComp.UITransform.GetComponentInChildren<SubSceneUI>();
+					ssPath = "Custom/SubScene/" + subSceneUI.creatorNameInputField.text + "/" + subSceneUI.signatureInputField.text + "/" + ssPath;
+				}
+
 				if (ssPath != null && ssPath.Contains("/"))
 				{
-					try { 
-					JSONNode subsceneNode = SuperController.singleton.LoadJSON(ssPath);
-					pluginJson = extractPluginJSON(subsceneNode, this.AtomUidToStoreAtomUid(this.containingAtom.uid).Split('/')[1]);
-					}catch (Exception e)
+					try
 					{
-						SuperController.LogError("Unable to load stored JSON: " + ssPath);
+						JSONNode subsceneNode = SuperController.singleton.LoadJSON(ssPath);
+						pluginJson = extractPluginJSON(subsceneNode, this.AtomUidToStoreAtomUid(this.containingAtom.uid).Split('/')[1]);
+					}
+					catch (Exception e)
+					{
+						SuperController.LogMessage("Unable to load stored JSON: " + ssPath);
 					}
 
 					if (pluginJson != null)

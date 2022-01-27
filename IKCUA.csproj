@@ -365,6 +365,26 @@
     <Compile Include="Shared Scripts\TriggerEventBroadcaster.cs" />
     <Compile Include="Shared Scripts\V3Tools.cs" />
     <Compile Include="Shared Scripts\Warning.cs" />
+    <Compile Include="UniBVH\AnimationClipUtility.cs" />
+    <Compile Include="UniBVH\AvatarDescription.cs" />
+    <Compile Include="UniBVH\BoneGizmoDrawer.cs" />
+    <Compile Include="UniBVH\BoneMapping.cs" />
+    <Compile Include="UniBVH\BvhBone.cs" />
+    <Compile Include="UniBVH\Format\Bvh.cs" />
+    <Compile Include="UniBVH\HumanPoseClip.cs" />
+    <Compile Include="UniBVH\HumanPoseTransfer.cs" />
+    <Compile Include="UniBVH\IBone.cs" />
+    <Compile Include="UniBVH\IO\BvhAnimationClip.cs" />
+    <Compile Include="UniBVH\IO\BvhImporter.cs" />
+    <Compile Include="UniBVH\IO\BvhImporterContext.cs" />
+    <Compile Include="UniBVH\IO\Extensions\BvhExtensions.cs" />
+    <Compile Include="UniBVH\IO\Extensions\UnityExtensions.cs" />
+    <Compile Include="UniBVH\MuscleDebug.cs" />
+    <Compile Include="UniBVH\MuscleInspector.cs" />
+    <Compile Include="UniBVH\Skeleton.cs" />
+    <Compile Include="UniBVH\SkeletonEstimator.cs" />
+    <Compile Include="UniBVH\SkeletonMeshUtility.cs" />
+    <Compile Include="UniBVH\VAMStringReader.cs" />
     <Compile Include="VamIK.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +419,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FinalIK\_DEMOS\FBBIK\Head Effector.unity" />
+    <None Include="UniBVH\IO\Extensions\BvhExtensions.cs.meta" />
+    <None Include="UniBVH\IO\Extensions\UnityExtensions.cs.meta" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
